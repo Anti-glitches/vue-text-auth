@@ -2,8 +2,8 @@
     <div>
         <h1 class="font-bold">Login</h1>
         <form @submit.prevent="handleClick">
-            <input type="email" placeholder="email" class="w-full border">
-            <input type="password" placeholder="password" class="w-full border">
+            <input type="email" placeholder="email" v-model="email" class="w-full border">
+            <input type="password" placeholder="password" v-model="password" class="w-full border">
             <button class="p-3 bg-emerald-300">Login</button>
         </form>
     </div>
@@ -13,12 +13,20 @@
     </div>
 </template>
 <script>
-import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import {createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { ref, onMounted } from 'vue'
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
-import {db} from '../firebase/config'
+import {db, auth} from '../firebase/config'
+
+import { useRouter } from 'vue-router'
+
 export default {
     setup() {
+        const email = ref();
+        const password = ref();
+
+        const router = useRouter();
+
         const handleClick = () =>{
             signInWithEmailAndPassword(auth, email.value, password.value)
                 .then((userCredential)=>{
@@ -28,19 +36,19 @@ export default {
                         .then((doc)=>{
                             console.log(doc.id, "=>", doc.data())
 
-                            fbData.value = {...doc.data(), id: doc.id}
+                            router.push('/profile')
+
                         }).catch(err=>{
                             console.log(err)
                         })
 
                     email.value = password.value = ""
-                    window.location.reload();
                 }).catch(err=>{
                     console.log(err);
                 })
         }
 
-        return {handleClick}
+        return {email, password, handleClick}
     }
 }
 </script>

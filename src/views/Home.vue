@@ -1,13 +1,16 @@
 <template>
     <div v-if="userData" class="bg-slate-100">
-        <div class="bg-white border-b-2 px-24 py-8 mb-4 flex gap-3">
+        <div class="bg-white border-b-2 px-24 py-8 mb-4 flex gap-3 justify-between">
             <i class="fa-solid fa-file-lines text-blue-400 text-5xl"></i>
-            <div>
+            <div class="flex-grow">
                 <input type="text" v-model="inputText" class="font-semibold text-lg">
                 <p v-if="loading"><i class="fa-solid fa-rotate"></i> Saving changes</p>              
                 <p v-else><i class="fa-solid fa-check"></i> Changes saved</p>              
             </div>
-
+            <div class="border flex justify-center items-center p-4 rounded-lg shadow cursor-pointer min-w-fit">
+                <i class="fa-solid fa-house text-xl mr-2 text-green-500"></i> 
+                <span class="font-semibold">Back Home</span>
+            </div>
         </div>
         <div class="px-20 h-[60rem]">
             <textarea placeholder="Type something..." v-model="textarea"

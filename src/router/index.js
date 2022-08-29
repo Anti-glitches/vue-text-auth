@@ -4,6 +4,7 @@ import Profile from "../views/Profile.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Dashboard from "../views/Dashboard.vue";
+import Test from "../views/Test.vue";
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         path: "/dashboard",
         name: "Dashboard",
         component: Dashboard,
+    },
+    {
+        path: "/dashboard/:id",
+        name: "Test",
+        component: Test,
     },
 ];
 

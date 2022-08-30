@@ -30,10 +30,14 @@ import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import {db, auth} from '../firebase/config'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import { useRouter } from 'vue-router'
+
 export default{
     setup() {
         const fbData = ref(null);
         const loading = ref(true);
+
+        const router = useRouter();
 
         onMounted(()=>{
             const unsub = onAuthStateChanged(auth, async(user) => {
@@ -59,7 +63,7 @@ export default{
                 'first name': fbData.value['first name'],
                 'last name': fbData.value['last name'],
             })
-            location.reload();
+            router.push('/')
         }
 
         return {fbData, loading, handleSave}

@@ -21,7 +21,7 @@
         </div>
     </div>
     <div v-else>
-        Loading...
+        <Loading/>
     </div>
 </template>
 <script>
@@ -31,43 +31,39 @@ import {db, auth} from '../firebase/config'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { useRouter } from 'vue-router'
+import Loading from './Loading.vue';
 
 export default{
     setup() {
         const fbData = ref(null);
         const loading = ref(true);
-
         const router = useRouter();
-
-        onMounted(()=>{
-            const unsub = onAuthStateChanged(auth, async(user) => {
-                if(user){
+        onMounted(() => {
+            const unsub = onAuthStateChanged(auth, async (user) => {
+                if (user) {
                     const docSnap = await getDoc(doc(db, "users", user.uid));
-        
-                    fbData.value = {...docSnap.data(), id: docSnap.id}
-                } else{
-                    console.log("user is not logged in")
+                    fbData.value = { ...docSnap.data(), id: docSnap.id };
+                }
+                else {
+                    console.log("user is not logged in");
                 }
                 unsub();
                 loading.value = false;
-            })
-            
+            });
             // const docSnap = await getDoc(doc(db, "users", "QV4P6dSx6zdEAqv3Y7Jcuzqey4x2"));
-        
             // fbData.value = {...docSnap.data(), id: docSnap.id}
-        })
-
-        const handleSave = async () =>{
+        });
+        const handleSave = async () => {
             await updateDoc(doc(db, "users", fbData.value.id), {
                 age: fbData.value.age,
-                'first name': fbData.value['first name'],
-                'last name': fbData.value['last name'],
-            })
-            router.push('/')
-        }
-
-        return {fbData, loading, handleSave}
-    }
+                "first name": fbData.value["first name"],
+                "last name": fbData.value["last name"],
+            });
+            router.push("/");
+        };
+        return { fbData, loading, handleSave };
+    },
+    components: { Loading }
 }
 </script>
 
